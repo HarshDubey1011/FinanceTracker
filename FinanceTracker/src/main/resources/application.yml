@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: FinanceTracker
+  datasource:
+    url: jdbc:postgresql://localhost:5432/finance_tracker
+    username: postgres
+    password: harsh
+  profiles:
+    active: dev
