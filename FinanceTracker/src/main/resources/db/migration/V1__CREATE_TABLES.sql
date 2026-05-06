@@ -22,11 +22,6 @@ CREATE TABLE CATEGORY(
                          CONSTRAINT unique_user_category_name UNIQUE(user_id, cat_name)
 );
 
-CREATE UNIQUE INDEX idx_unique_system_category
-    ON category (cat_name)
-    WHERE user_id IS NULL;
-
-
 CREATE TABLE SUBSCRIPTION(
      id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY ,
      user_id BIGINT NOT NULL,
@@ -62,3 +57,16 @@ CREATE TABLE TRANSACTION(
     CONSTRAINT fk_trans_sub FOREIGN KEY(sub_id) REFERENCES SUBSCRIPTION(id)
 );
 
+CREATE TABLE BUDGET(
+                       id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                       user_id BIGINT NOT NULL,
+                       cat_id BIGINT,
+                       amount DECIMAL(15,2) NOT NULL,
+                       created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+                       updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+                       period TEXT NOT NULL CHECK (period IN ('DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY')),
+                       start_date DATE NOT NULL,
+                       end_date DATE NOT NULL,
+                       CONSTRAINT fk_budget_user FOREIGN KEY(user_id) REFERENCES users(id),
+                       CONSTRAINT fk_budget_cat FOREIGN KEY(cat_id) REFERENCES category(id)
+);
