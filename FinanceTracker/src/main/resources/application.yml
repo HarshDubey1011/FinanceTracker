@@ -7,3 +7,13 @@ spring:
     password: harsh
   profiles:
     active: dev
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  jwt:
+    secret: dasfasdfadsfas
+    access-token-expiration: 7200 #5minutes
+    refresh-token-expiration: 604800 #7d
+  threads:
+    virtual:
+      enabled: true
