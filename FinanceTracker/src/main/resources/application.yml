@@ -1,6 +1,10 @@
 spring:
   application:
     name: FinanceTracker
+  data:
+    redis:
+      host: localhost
+      port: 6379
   datasource:
     url: jdbc:postgresql://localhost:5432/finance_tracker
     username: postgres
@@ -11,7 +15,7 @@ spring:
     hibernate:
       ddl-auto: validate
   jwt:
-    secret: dasfasdfadsfas
+    secret: rl9+a7+K+ESco1iFeAVRle4GPBbOfC5ge7x2UmkXfp0=
     access-token-expiration: 7200 #5minutes
     refresh-token-expiration: 604800 #7d
   threads:
