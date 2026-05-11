@@ -19,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
+    private final TokenBlackListService tokenBlackListService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var authHeader = request.getHeader("Authorization");
@@ -29,6 +30,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         var token = authHeader.replace("Bearer ", "");
         if(!jwtService.isTokenValid(token)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // Check for the BlackList Token
+        if(tokenBlackListService.isTokenBlacklisted(token)) {
             filterChain.doFilter(request, response);
             return;
         }

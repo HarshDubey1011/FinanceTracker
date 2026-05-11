@@ -35,6 +35,15 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(TokenException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTokenException(TokenException ex) {
+        log.warn("Token Exception: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                ApiResponse.error(ex.getMessage())
+        );
+
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String,String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         log.warn("Method Argument Not Valid: {}", ex.getMessage());
