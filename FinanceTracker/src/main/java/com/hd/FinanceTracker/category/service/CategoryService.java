@@ -10,6 +10,10 @@ import com.hd.FinanceTracker.common.exception.DuplicateResourceException;
 import com.hd.FinanceTracker.common.exception.ResourceNotFoundException;
 import com.hd.FinanceTracker.common.security.AuthService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -35,10 +39,12 @@ public class CategoryService {
         return categoryMapper.toCategoryResponseDto(saved);
     }
 
-    public List<CategoryResponseDto> getAllCategories() {
+    public Page<CategoryResponseDto> getAllCategories(int page, int size) {
         var user = authService.getCurrentUser();
-        List<Category> categoryList = categoryRepository.findAllVisibleToUser(user.getId());
-        return categoryList.stream().map(categoryMapper::toCategoryResponseDto).toList();
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        Page<Category> categoryPage = categoryRepository.findAllVisibleToUser(user.getId(), pageable);
+        return categoryPage.map(categoryMapper::toCategoryResponseDto);
     }
 
     public CategoryResponseDto updateCategory(CategoryRequestDto categoryRequestDto, Long categoryId) {
