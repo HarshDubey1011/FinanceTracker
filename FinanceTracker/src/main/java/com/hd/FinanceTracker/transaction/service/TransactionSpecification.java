@@ -12,11 +12,11 @@ public class TransactionSpecification {
     }
 
     public static Specification<Transaction> byCategoryId(Long categoryId) {
-        return (root, query, cb) ->  cb.equal(root.get("category").get("id"), categoryId);
+        return (root, query, cb) ->  categoryId == null ? null : cb.equal(root.get("category").get("id"), categoryId);
     }
 
     public static Specification<Transaction> byTransactionType(TransactionType transactionType) {
-        return (root, query, cb) -> cb.equal(root.get("transactionType"), transactionType);
+        return (root, query, cb) -> transactionType == null ? null : cb.equal(root.get("transactionType"), transactionType);
     }
 
     public static Specification<Transaction> betweenDates(OffsetDateTime startDate, OffsetDateTime endDate) {

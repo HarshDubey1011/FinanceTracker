@@ -14,8 +14,7 @@ public record TransactionRequestDto(
         @NotNull(message = "Please enter the amount")
         @Positive(message = "Amount Should be greater than zero")
         BigDecimal amount,
-        @NotBlank(message = "Please provide Description")
-        String description,
+        String transactionDescription,
         @NotNull(message = "Please provide transaction type")
         TransactionType transactionType,
         @NotNull(message = "Please provide a category id")

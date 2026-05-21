@@ -87,6 +87,7 @@ public class TransactionService {
                                                         Long categoryId, TransactionType type,
                                                         OffsetDateTime startDate,
                                                         OffsetDateTime endDate) {
+        size = Math.min(size, 50);
         var user =  authService.getCurrentUser();
         Pageable pageable = PageRequest.of(page, size, Sort.by("transactionDate").descending());
 
