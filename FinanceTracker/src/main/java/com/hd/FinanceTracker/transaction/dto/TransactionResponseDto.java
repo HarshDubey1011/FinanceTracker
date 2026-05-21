@@ -9,10 +9,10 @@ import java.time.OffsetDateTime;
 public record TransactionResponseDto(
         Long id,
         BigDecimal amount,
+        String transactionDescription,
         CategorySummaryDto category,
         TransactionType transactionType,
         TransactionStatus status,
-        String description,
         OffsetDateTime transactionDate,
         OffsetDateTime createdAt
 ) {
