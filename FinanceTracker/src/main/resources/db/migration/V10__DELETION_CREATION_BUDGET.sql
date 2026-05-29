@@ -1,0 +1,1 @@
+ALTER TABLE budget ADD COLUMN deleted_at TIMESTAMPTZ;
