@@ -1,5 +1,6 @@
 package com.hd.FinanceTracker.transaction.service;
 
+import com.hd.FinanceTracker.budget.service.BudgetService;
 import com.hd.FinanceTracker.category.repository.CategoryRepository;
 import com.hd.FinanceTracker.common.exception.AccessDeniedException;
 import com.hd.FinanceTracker.common.exception.ResourceNotFoundException;
@@ -28,6 +29,7 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final AuthService authService;
     private final TransactionMapper transactionMapper;
+    private final BudgetService budgetService;
 
     public TransactionResponseDto createTransaction(TransactionRequestDto requestDto) {
         var category = categoryRepository.findById(requestDto.categoryId()).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
@@ -44,9 +46,9 @@ public class TransactionService {
         transaction.setTransactionDate(requestDto.transactionDate()!=null ? requestDto.transactionDate(): OffsetDateTime.now());
 
         var savedTransaction = transactionRepository.save(transaction);
+        budgetService.checkBudgetAlert(user.getId(), category.getId(), savedTransaction.getTransactionDate());
         return transactionMapper.toDto(savedTransaction);
 
-        // Todo async budget overspend alert
     }
 
     public TransactionResponseDto updateTransaction(Long transactionId, TransactionRequestDto requestDto) {
